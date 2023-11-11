@@ -1,12 +1,74 @@
-.property-card {
-  font-family: sans-serif;
-  width: 544px;
+@font-face {
+  font-family: 'avenir';
+  src: local('avenir'), url(../public/avenir-regular.woff2) format('woff2');
+}
 
+@font-face {
+  font-family: 'avenir-medium';
+  src: local('avenir'), url(../public/avenir-medium.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'avenir-demibold';
+  src: local('avenir'), url(../public/avenir-demibold.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'avenir-bold';
+  src: local('avenir'), url(../public/avenir-bold.woff2) format('woff2');
+}
+
+.ribbon {
+  position: absolute;
+  z-index: 10;
+  background-color: #ff72b6;
+  font-family: avenir-demibold;
+  text-transform: uppercase;
+  color: white;
+  padding: 2.5px 2px;
+  font-size: 12px;
+  margin-top: 8.5px;
+}
+
+.ribbon::after {
+  content: '';
+  position: absolute;
+  z-index: 10;
+  height: 0;
+  top: 0;
+  right: -10.5px;
+  border-top: 10.7px solid transparent;
+  border-bottom: 10.7px solid transparent;
+  border-left: 10.7px solid #ff72b6;
+}
+
+.ribbon::before {
+  content: '';
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: -4px;
+  height: 110%;
+  width: 4px;
+  background: linear-gradient(
+    #ff72b6 0%,
+    #ff72b6 90%,
+    #ce367f 90%,
+    #ce367f 100%
+  );
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.property-card {
+  width: 544px;
   border-radius: 4px;
-  box-shadow: 0px 4px 16px 0px rgba(11, 17, 52, 0.20);
+  box-shadow: 0px 4px 16px 0px rgba(11, 17, 52, 0.2);
+  font-family: avenir;
 }
 
 .property-image-container {
+  position: relative;
   display: flex;
   width: 100%;
   height: 272px;
@@ -18,6 +80,22 @@
   height: 100%;
   object-fit: cover;
   object-position: 0% 40%;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: radial-gradient(transparent, black);
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.image-overlay:hover {
+  opacity: 0.4;
+  cursor: pointer;
 }
 
 .property-content {
@@ -49,7 +127,7 @@
 
 .property-title {
   color: #1a2258;
-  font-weight: 600;
+  font-family: avenir-demibold;
   font-size: 23px;
   margin: 0;
 }
@@ -71,7 +149,7 @@
 
 .price-psf {
   color: #1a2258;
-  font-weight: 600;
+  font-family: avenir-demibold;
   font-size: 19px;
   margin: 0;
 }
@@ -111,8 +189,19 @@
 .button-styling {
   color: #216bff;
   font-size: 16px;
-  font-weight: 600;
+  font-family: avenir-demibold;
   border: none;
   background-color: transparent;
   padding: 0;
+  transition: opacity 0.1s ease;
+}
+
+.button-styling:hover {
+  color: #1757d7;
+  cursor: pointer;
+}
+
+.description-styling {
+  padding-top: 12px;
+  padding-bottom: 12px;
 }

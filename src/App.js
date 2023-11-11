@@ -16,17 +16,28 @@ export default function ListingAd({ store }) {
     year,
   } = store
   const [click, setClick] = useState(false)
+  const [descriptionButton, setDescriptionButton] = useState('See description')
 
   const handleClick = () => {
     setClick(!click)
+    setDescriptionButton(click ? 'See description' : 'Close description')
   }
+
+  const formatted_description = description.split('\n').map((line, index) => (
+    <div key={index}>
+      {line}
+      <br />
+    </div>
+  ))
 
   const per_square_foot = `$${psf_min.toLocaleString()} - $${psf_max.toLocaleString()} psf`
   const properties_type = `${project_type} · ${year} · ${ownership_type}`
 
   return (
     <div className="property-card">
+      <div className="ribbon">Launching Soon</div>
       <div className="property-image-container">
+        <div className="image-overlay" />
         <img className="property-image" src={pic} alt={title} />
       </div>
       <div className="property-content">
@@ -49,16 +60,20 @@ export default function ListingAd({ store }) {
             <p className="price-sublabel">{subprice_label}</p>
           </div>
         </div>
-        <div className="button-container">
-          <button onClick={handleClick} className="button-styling">
-            See description
-          </button>
-        </div>
         {click && (
           <div>
-            <p>{description}</p>
+            <hr />
+            <div className="description-styling">{formatted_description}</div>
           </div>
         )}
+        <div className="button-container">
+          <button
+            id="button-text"
+            onClick={handleClick}
+            className="button-styling">
+            {descriptionButton}
+          </button>
+        </div>
       </div>
     </div>
   )
