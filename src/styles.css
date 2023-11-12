@@ -36,7 +36,8 @@
   z-index: 10;
   height: 0;
   top: 0;
-  right: -10.5px;
+  right: -10.6px;
+  /* padding-left: 2px; */
   border-top: 10.7px solid transparent;
   border-bottom: 10.7px solid transparent;
   border-left: 10.7px solid #ff72b6;
@@ -80,6 +81,15 @@
   height: 100%;
   object-fit: cover;
   object-position: 0% 40%;
+}
+
+.carousel {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .image-overlay {
@@ -204,4 +214,48 @@
 .description-styling {
   padding-top: 12px;
   padding-bottom: 12px;
+}
+
+.phone-number-styling:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+@media only screen and (max-width: 600px) {
+  .property-card {
+    width: 343px;
+  }
+
+  .property-content {
+    padding: 16px;
+  }
+
+  .property-title {
+    font-size: 16px;
+  }
+
+  .property-header {
+    display: block;
+  }
+
+  .property-price {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    text-align: start;
+    align-items: center;
+    column-gap: 12px;
+  }
+
+  .price-psf {
+    font-size: 16px;
+  }
+
+  .price-sublabel {
+    font-size: 12px;
+  }
+
+  .button-container {
+    padding-top: 12px;
+  }
 }

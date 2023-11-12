@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import './styles.css'
 
 export default function ListingAd({ store }) {
+  const PHONE_NUMBER_REGEX = /(\b8\d{3}(?:\s?\d{4,5})?\b)/
+
   const {
     pic,
     title,
@@ -15,7 +17,9 @@ export default function ListingAd({ store }) {
     ownership_type,
     year,
   } = store
+
   const [click, setClick] = useState(false)
+  const [clickedNumber, setClickedNumber] = useState(null)
   const [descriptionButton, setDescriptionButton] = useState('See description')
 
   const handleClick = () => {
@@ -23,21 +27,78 @@ export default function ListingAd({ store }) {
     setDescriptionButton(click ? 'See description' : 'Close description')
   }
 
-  const formatted_description = description.split('\n').map((line, index) => (
-    <div key={index}>
-      {line}
-      <br />
-    </div>
-  ))
+  const handleNumber = (phoneNumber) => {
+    setClickedNumber(phoneNumber)
+  }
 
-  const per_square_foot = `$${psf_min.toLocaleString()} - $${psf_max.toLocaleString()} psf`
-  const properties_type = `${project_type} · ${year} · ${ownership_type}`
+  function censorLastDigits(phoneNumber, censored) {
+    if (censored) {
+      const firstFourDigits = phoneNumber.slice(0, 4)
+      const censoredDigits = phoneNumber.slice(4).replace(/\d/g, '*')
+      return firstFourDigits + censoredDigits
+    } else {
+      return phoneNumber
+    }
+  }
+
+  const formattedDescription = description
+    .split(PHONE_NUMBER_REGEX)
+    .map((words, index) => {
+      const wordsIsPhoneNumber = PHONE_NUMBER_REGEX.test(words)
+
+      if (wordsIsPhoneNumber) {
+        const phoneNumber = words
+        const isClicked = phoneNumber === clickedNumber
+        const censoredNumber = censorLastDigits(phoneNumber, !isClicked)
+
+        return (
+          <React.Fragment key={index}>
+            <a
+              className="phone-number-styling"
+              onClick={() => handleNumber(phoneNumber)}>
+              {censoredNumber}
+            </a>
+          </React.Fragment>
+        )
+      } else {
+        return (
+          <React.Fragment key={index}>
+            {words.split('\n').map((line, lineIndex) => (
+              <React.Fragment key={lineIndex}>
+                {lineIndex > 0 && <br />}
+                {line}
+              </React.Fragment>
+            ))}
+          </React.Fragment>
+        )
+      }
+    })
+
+  const perSquareFoot = `$${psf_min.toLocaleString()} - $${psf_max.toLocaleString()} psf`
+  const propertiesType = `${project_type} · ${year} · ${ownership_type}`
 
   return (
     <div className="property-card">
       <div className="ribbon">Launching Soon</div>
       <div className="property-image-container">
-        <div className="image-overlay" />
+        <div className="image-overlay">
+          <div className="carousel">
+            <img
+              src="/chevron-left.svg"
+              alt="chevron"
+              width={17}
+              height={32}
+              style={{ margin: '16px' }}
+            />
+            <img
+              src="/chevron-right.svg"
+              alt="chevron"
+              width={17}
+              height={32}
+              style={{ margin: '16px' }}
+            />
+          </div>
+        </div>
         <img className="property-image" src={pic} alt={title} />
       </div>
       <div className="property-content">
@@ -51,19 +112,19 @@ export default function ListingAd({ store }) {
               </div>
             </div>
             <div className="property-type-container">
-              <p className="property-type">{properties_type}</p>
+              <p className="property-type">{propertiesType}</p>
               <p className="availabilities-label">{availabilities_label}</p>
             </div>
           </div>
           <div className="property-price">
-            <p className="price-psf">{per_square_foot}</p>
+            <p className="price-psf">{perSquareFoot}</p>
             <p className="price-sublabel">{subprice_label}</p>
           </div>
         </div>
         {click && (
           <div>
             <hr />
-            <div className="description-styling">{formatted_description}</div>
+            <div className="description-styling">{formattedDescription}</div>
           </div>
         )}
         <div className="button-container">
